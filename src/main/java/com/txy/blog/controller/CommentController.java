@@ -2,11 +2,9 @@ package com.txy.blog.controller;
 
 import com.txy.blog.entity.Comment;
 import com.txy.blog.payload.CommentDTO;
-import com.txy.blog.payload.PostDTO;
 import com.txy.blog.service.CommentService;
-import com.txy.blog.util.Constants;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +26,7 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<CommentDTO> createComment(@PathVariable Long postId, @RequestBody CommentDTO commentDTO) {
+    public ResponseEntity<CommentDTO> createComment(@PathVariable Long postId, @Valid @RequestBody CommentDTO commentDTO) {
         Comment comment = commentService.createComment(postId, commentDTO);
         CommentDTO commentDTOResponse = modelMapper.map(comment, CommentDTO.class);
         return new ResponseEntity<>(commentDTOResponse, HttpStatus.CREATED);
@@ -51,7 +49,7 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CommentDTO> updateCommentById(@PathVariable Long postId, @PathVariable Long id, @RequestBody CommentDTO commentDTO) {
+    public ResponseEntity<CommentDTO> updateCommentById(@PathVariable Long postId, @PathVariable Long id, @Valid @RequestBody CommentDTO commentDTO) {
         Comment comment = commentService.updateCommentById(postId, id, commentDTO);
         CommentDTO commentDTOResponse = modelMapper.map(comment, CommentDTO.class);
         return new ResponseEntity<>(commentDTOResponse, HttpStatus.OK);
