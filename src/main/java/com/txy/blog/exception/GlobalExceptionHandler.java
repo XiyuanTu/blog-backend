@@ -3,6 +3,7 @@ package com.txy.blog.exception;
 import com.txy.blog.payload.DetailedError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -38,6 +39,12 @@ public class GlobalExceptionHandler {
         });
         DetailedError detailedError = new DetailedError(new Date(), webRequest.getDescription(false), errors.toString());
         return new ResponseEntity<>(detailedError, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<DetailedError> handleAccessDeniedException(AccessDeniedException accessDeniedException, WebRequest webRequest) {
+        DetailedError detailedError = new DetailedError(new Date(), webRequest.getDescription(false), accessDeniedException.getMessage());
+        return new ResponseEntity<>(detailedError, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(Exception.class)
