@@ -1,11 +1,12 @@
 package com.txy.blog.service.impl;
 
+import com.txy.blog.entity.Category;
 import com.txy.blog.entity.Post;
 import com.txy.blog.exception.ResourceNotFoundException;
-import com.txy.blog.payload.CommentDTO;
 import com.txy.blog.payload.PostDTO;
 import com.txy.blog.payload.PostPagination;
 import com.txy.blog.repository.PostRepository;
+import com.txy.blog.service.CategoryService;
 import com.txy.blog.service.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -24,14 +25,20 @@ public class PostServiceImpl implements PostService {
 
     private final ModelMapper modelMapper;
 
-    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper) {
+    private final CategoryService categoryService;
+
+    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper, CategoryService categoryService) {
         this.postRepository = postRepository;
         this.modelMapper = modelMapper;
+        this.categoryService = categoryService;
     }
 
     @Override
     public Post createPost(PostDTO postDTO) {
         Post post = modelMapper.map(postDTO, Post.class);
+        Long categoryId = postDTO.getCategoryId();
+        Category category = categoryService.getCategoryById(categoryId);
+        post.setCategory(category);
         Post newPost = postRepository.save(post);
         return newPost;
     }
@@ -65,11 +72,14 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post updatePostById(Long id, PostDTO postDTO) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", String.valueOf(id)));
+        Post post = getPostById(id);
 
         post.setTitle(postDTO.getTitle());
         post.setContent(postDTO.getContent());
         post.setDescription(postDTO.getDescription());
+        Long categoryId = postDTO.getCategoryId();
+        Category category = categoryService.getCategoryById(categoryId);
+        post.setCategory(category);
 
         Post updatedPost = updatePost(post);
 
@@ -86,5 +96,12 @@ public class PostServiceImpl implements PostService {
     public void deletePostById(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", String.valueOf(id)));
         postRepository.delete(post);
+    }
+
+    @Override
+    public List<Post> getPostsByCategoryId(Long categoryId) {
+        categoryService.getCategoryById(categoryId);
+        List<Post> posts = postRepository.findByCategoryId(categoryId);
+        return posts;
     }
 }
