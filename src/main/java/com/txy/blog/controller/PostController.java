@@ -5,6 +5,9 @@ import com.txy.blog.payload.PostDTO;
 import com.txy.blog.payload.PostPagination;
 import com.txy.blog.service.PostService;
 import com.txy.blog.util.Constants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -28,6 +31,9 @@ public class PostController {
         this.modelMapper = modelMapper;
     }
 
+    @Operation(summary = "Create Post")
+    @ApiResponse(responseCode = "201", description = "Post created")
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<PostDTO> createPost(@Valid @RequestBody PostDTO postDTO) {
@@ -37,6 +43,8 @@ public class PostController {
     }
 
     @GetMapping
+    @Operation(summary = "Get All Posts")
+    @ApiResponse(responseCode = "200", description = "Posts fetched")
     public ResponseEntity<PostPagination> getAllPosts(
             @RequestParam(defaultValue = Constants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(defaultValue = Constants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
@@ -48,28 +56,38 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get Post By Id")
+    @ApiResponse(responseCode = "200", description = "Post fetched")
     public ResponseEntity<PostDTO> getPostById(@PathVariable Long id) {
         Post post = postService.getPostById(id);
         PostDTO postDTOResponse = modelMapper.map(post, PostDTO.class);
         return new ResponseEntity<>(postDTOResponse, HttpStatus.OK);
     }
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
+    @Operation(summary = "Update Post By Id")
+    @ApiResponse(responseCode = "200", description = "Post updated")
     public ResponseEntity<PostDTO> updatePostById(@PathVariable Long id, @Valid @RequestBody PostDTO postDTO) {
         Post post = postService.updatePostById(id, postDTO);
         PostDTO postDTOResponse = modelMapper.map(post, PostDTO.class);
         return new ResponseEntity<>(postDTOResponse, HttpStatus.OK);
     }
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete Post By Id")
+    @ApiResponse(responseCode = "200", description = "Post deleted")
     public ResponseEntity<String> deletePostById(@PathVariable Long id) {
         postService.deletePostById(id);
         return new ResponseEntity<>("Post deleted successfully", HttpStatus.OK);
     }
 
     @GetMapping("/category/{id}")
+    @Operation(summary = "Get Posts By Category Id")
+    @ApiResponse(responseCode = "200", description = "Post fetched")
     public ResponseEntity<List<PostDTO>> getPostsByCategoryId(@PathVariable Long id) {
         List<Post> posts = postService.getPostsByCategoryId(id);
         List<PostDTO> postDTOS = posts.stream().map(post -> modelMapper.map(post, PostDTO.class)).collect(Collectors.toList());

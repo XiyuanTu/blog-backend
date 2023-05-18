@@ -4,6 +4,8 @@ import com.txy.blog.payload.JWTAuthResponse;
 import com.txy.blog.payload.LoginDTO;
 import com.txy.blog.payload.RegisterDTO;
 import com.txy.blog.service.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +24,8 @@ public class AuthController {
     }
 
     @PostMapping(value = {"/login", "/sign-in"})
+    @Operation(summary = "Login")
+    @ApiResponse(responseCode = "200", description = "Login successfully")
     public ResponseEntity<JWTAuthResponse> login(@RequestBody LoginDTO loginDTO) {
         String token = authService.login(loginDTO);
         JWTAuthResponse jwtAuthResponse = new JWTAuthResponse(token);
@@ -29,7 +33,9 @@ public class AuthController {
     }
 
     @PostMapping(value = {"/register", "/signup"})
-    public ResponseEntity<String> login(@RequestBody RegisterDTO registerDTO) {
+    @Operation(summary = "Register")
+    @ApiResponse(responseCode = "200", description = "Register successfully")
+    public ResponseEntity<String> register(@RequestBody RegisterDTO registerDTO) {
         String response = authService.register(registerDTO);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
