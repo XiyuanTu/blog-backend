@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/api")
 public class CategoryController {
     private final CategoryService categoryService;
     private final ModelMapper modelMapper;
@@ -26,7 +26,7 @@ public class CategoryController {
         this.modelMapper = modelMapper;
     }
 
-    @PostMapping()
+    @PostMapping("/v1/categories")
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Add Category")
@@ -37,7 +37,7 @@ public class CategoryController {
         return new ResponseEntity<>(categoryDTOResponse, HttpStatus.CREATED);
     }
 
-    @GetMapping()
+    @GetMapping("/v1/categories")
     @Operation(summary = "Get All Categories")
     @ApiResponse(responseCode = "200", description = "Categories fetched")
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {
@@ -46,7 +46,7 @@ public class CategoryController {
         return new ResponseEntity<>(categoryDTOs, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/v1/categories/{id}")
     @Operation(summary = "Get Category By Id")
     @ApiResponse(responseCode = "200", description = "Category fetched")
     public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Long id) {
@@ -57,7 +57,7 @@ public class CategoryController {
 
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/{id}")
+    @PutMapping("/v1/categories/{id}")
     @Operation(summary = "Update Category By Id")
     @ApiResponse(responseCode = "200", description = "Category updated")
     public ResponseEntity<CategoryDTO> updateCategoryById(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
@@ -66,7 +66,7 @@ public class CategoryController {
         return new ResponseEntity<>(categoryDTOResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/v1/categories/{id}")
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "Delete Category By Id")
     @ApiResponse(responseCode = "200", description = "Category deleted")

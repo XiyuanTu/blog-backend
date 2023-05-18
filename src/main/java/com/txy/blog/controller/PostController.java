@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/api")
 public class PostController {
 
     private final PostService postService;
@@ -35,14 +35,14 @@ public class PostController {
     @ApiResponse(responseCode = "201", description = "Post created")
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
+    @PostMapping("/v1/posts")
     public ResponseEntity<PostDTO> createPost(@Valid @RequestBody PostDTO postDTO) {
         Post post = postService.createPost(postDTO);
         PostDTO postDTOResponse = modelMapper.map(post, PostDTO.class);
         return new ResponseEntity<>(postDTOResponse, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/v1/posts")
     @Operation(summary = "Get All Posts")
     @ApiResponse(responseCode = "200", description = "Posts fetched")
     public ResponseEntity<PostPagination> getAllPosts(
@@ -55,7 +55,7 @@ public class PostController {
         return new ResponseEntity<>(postPagination, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/v1/posts/{id}")
     @Operation(summary = "Get Post By Id")
     @ApiResponse(responseCode = "200", description = "Post fetched")
     public ResponseEntity<PostDTO> getPostById(@PathVariable Long id) {
@@ -66,7 +66,7 @@ public class PostController {
 
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/{id}")
+    @PutMapping("/v1/posts/{id}")
     @Operation(summary = "Update Post By Id")
     @ApiResponse(responseCode = "200", description = "Post updated")
     public ResponseEntity<PostDTO> updatePostById(@PathVariable Long id, @Valid @RequestBody PostDTO postDTO) {
@@ -77,7 +77,7 @@ public class PostController {
 
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/v1/posts/{id}")
     @Operation(summary = "Delete Post By Id")
     @ApiResponse(responseCode = "200", description = "Post deleted")
     public ResponseEntity<String> deletePostById(@PathVariable Long id) {
@@ -85,7 +85,7 @@ public class PostController {
         return new ResponseEntity<>("Post deleted successfully", HttpStatus.OK);
     }
 
-    @GetMapping("/category/{id}")
+    @GetMapping("/v1/posts/category/{id}")
     @Operation(summary = "Get Posts By Category Id")
     @ApiResponse(responseCode = "200", description = "Post fetched")
     public ResponseEntity<List<PostDTO>> getPostsByCategoryId(@PathVariable Long id) {

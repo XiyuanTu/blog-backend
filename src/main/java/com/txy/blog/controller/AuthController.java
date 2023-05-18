@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api")
 public class AuthController {
 
     private final AuthService authService;
@@ -23,7 +23,7 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping(value = {"/login", "/sign-in"})
+    @PostMapping(value = {"/v1/auth/login", "/v1/auth/sign-in"})
     @Operation(summary = "Login")
     @ApiResponse(responseCode = "200", description = "Login successfully")
     public ResponseEntity<JWTAuthResponse> login(@RequestBody LoginDTO loginDTO) {
@@ -32,7 +32,7 @@ public class AuthController {
         return ResponseEntity.ok(jwtAuthResponse);
     }
 
-    @PostMapping(value = {"/register", "/signup"})
+    @PostMapping(value = {"/v1/auth/register", "/v1/auth/signup"})
     @Operation(summary = "Register")
     @ApiResponse(responseCode = "200", description = "Register successfully")
     public ResponseEntity<String> register(@RequestBody RegisterDTO registerDTO) {

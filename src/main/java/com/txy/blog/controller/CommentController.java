@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/posts/{postId}/comments")
+@RequestMapping("/api")
 public class CommentController {
 
     private final CommentService commentService;
@@ -28,7 +28,7 @@ public class CommentController {
         this.modelMapper = modelMapper;
     }
 
-    @PostMapping
+    @PostMapping("/v1/posts/{postId}/comments")
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "Create Comment")
     @ApiResponse(responseCode = "201", description = "Comment created")
@@ -38,7 +38,7 @@ public class CommentController {
         return new ResponseEntity<>(commentDTOResponse, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/v1/posts/{postId}/comments")
     @Operation(summary = "Get All Comments")
     @ApiResponse(responseCode = "200", description = "Comments fetched")
     public ResponseEntity<List<CommentDTO>> getAllComments(@PathVariable Long postId) {
@@ -48,7 +48,7 @@ public class CommentController {
         return new ResponseEntity<>(commentDTOsResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/v1/posts/{postId}/comments/{id}")
     @Operation(summary = "Get Comment By Id")
     @ApiResponse(responseCode = "200", description = "Comments fetched")
     public ResponseEntity<CommentDTO> getCommentById(@PathVariable Long postId, @PathVariable Long id) {
@@ -58,7 +58,7 @@ public class CommentController {
         return new ResponseEntity<>(commentDTOResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/v1/posts/{postId}/comments/{id}")
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "Update Comment By Id")
     @ApiResponse(responseCode = "200", description = "Post updated")
@@ -68,7 +68,7 @@ public class CommentController {
         return new ResponseEntity<>(commentDTOResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/v1/posts/{postId}/comments/{id}")
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "Delete Comment By Id")
     @ApiResponse(responseCode = "200", description = "Comment updated")
