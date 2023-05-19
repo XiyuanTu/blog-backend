@@ -1,10 +1,10 @@
 package com.txy.blog.controller;
 
+import com.txy.blog.constant.Constants;
 import com.txy.blog.entity.Post;
 import com.txy.blog.payload.PostDTO;
 import com.txy.blog.payload.PostPagination;
 import com.txy.blog.service.PostService;
-import com.txy.blog.util.Constants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
