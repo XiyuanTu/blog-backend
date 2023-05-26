@@ -2,6 +2,7 @@ package com.txy.blog.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +12,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table()
+@Builder
+@Table(name = "table_category")
 public class Category {
     @Id
     @GeneratedValue(

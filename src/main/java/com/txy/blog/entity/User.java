@@ -11,6 +11,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "table_user")
 public class User {
     @Id
     @GeneratedValue(
@@ -30,7 +31,7 @@ public class User {
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "user_role",
+    @JoinTable(name = "table_user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )

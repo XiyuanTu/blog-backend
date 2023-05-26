@@ -4,13 +4,12 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table()
+@Table(name = "table_comment")
 public class Comment {
 
     @Id

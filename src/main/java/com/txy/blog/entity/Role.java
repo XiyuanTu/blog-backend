@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "table_role")
 public class Role {
     @Id
     @GeneratedValue(

@@ -1,10 +1,7 @@
 package com.txy.blog.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,12 +10,14 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(
         uniqueConstraints = {@UniqueConstraint(
                 columnNames = {"title"},
                 name = "title_unique_constraint"
-        )}
+        )},
+        name = "table_post"
 )
 public class Post {
     @Id

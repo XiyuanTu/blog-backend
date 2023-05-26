@@ -81,14 +81,8 @@ public class PostServiceImpl implements PostService {
         Category category = categoryService.getCategoryById(categoryId);
         post.setCategory(category);
 
-        Post updatedPost = updatePost(post);
-
-        return updatedPost;
-    }
-
-    @Override
-    public Post updatePost(Post post) {
         Post updatedPost = postRepository.save(post);
+
         return updatedPost;
     }
 
