@@ -29,3 +29,6 @@ process.
   + When building the docker image, the platform needs to be the same. For
     example: ```docker build -t blog --platform=linux/arm64 .```
 + Create a cluster and a task, and then run the task in the cluster
+
+## Pics
+![image](https://github.com/XiyuanTu/blog-backend/assets/79139571/63636449-1de4-4b1a-a092-d6eca6c26bf9)
